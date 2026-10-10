@@ -1,0 +1,40 @@
+/* OpenInfinity brand: Geist, neutral greys, black / white accents (see design.open-infinity.com). */
+@font-face { font-family: "Geist"; src: url("../assets/fonts/Geist-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Geist"; src: url("../assets/fonts/Geist-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Geist"; src: url("../assets/fonts/Geist-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("../assets/fonts/GeistMono-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+
+:root {
+  --sl-font: "Geist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --sl-font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* dark theme */
+  --sl-color-accent-low: #262626;
+  --sl-color-accent: #a3a3a3;
+  --sl-color-accent-high: #ffffff;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #ededed;
+  --sl-color-gray-2: #c4c4c4;
+  --sl-color-gray-3: #8f8f8f;
+  --sl-color-gray-4: #5c5c5c;
+  --sl-color-gray-5: #383838;
+  --sl-color-gray-6: #242424;
+  --sl-color-black: #141414;
+}
+
+:root[data-theme="light"] {
+  --sl-color-accent-low: #ebebea;
+  --sl-color-accent: #3d3d3d;
+  --sl-color-accent-high: #000000;
+  --sl-color-white: #000000;
+  --sl-color-gray-1: #242424;
+  --sl-color-gray-2: #383838;
+  --sl-color-gray-3: #5c5c5c;
+  --sl-color-gray-4: #8f8f8f;
+  --sl-color-gray-5: #c4c4c4;
+  --sl-color-gray-6: #ededed;
+  --sl-color-gray-7: #f6f6f5;
+  --sl-color-black: #ffffff;
+}
+
+.site-title img { height: 1.5rem; width: auto; }
