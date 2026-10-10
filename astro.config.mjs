@@ -8,6 +8,30 @@ const site = (process.env.SITE_URL || "https://docs.open-infinity.com").replace(
 const base = process.env.BASE_PATH || "/";
 const withBase = (path) => `${base.replace(/\/$/, "")}/${path}`;
 
+// Arriving from outside the site: show Chinese to Chinese-language systems and English to everyone else.
+// Moving within the site (including the language menu) counts as a choice and is remembered.
+// Crawlers are never redirected, so both language versions stay indexable (hreflang links them).
+const languageRedirect = `(function () {
+  try {
+    if (/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent)) return;
+    var KEY = "oi-docs-lang";
+    var root = ${JSON.stringify(base.replace(/\/$/, ""))};
+    var rest = location.pathname.slice(root.length) || "/";
+    var here = rest === "/en" || rest.indexOf("/en/") === 0 ? "en" : "zh";
+    var internal = false;
+    try { internal = !!document.referrer && new URL(document.referrer).host === location.host; } catch (e) {}
+    if (internal) { localStorage.setItem(KEY, here); return; }
+    var want = localStorage.getItem(KEY);
+    if (want !== "zh" && want !== "en") {
+      var n = ((navigator.languages && navigator.languages[0]) || navigator.language || "").toLowerCase();
+      want = n.indexOf("zh") === 0 ? "zh" : "en";
+    }
+    if (want === here) return;
+    var target = want === "en" ? "/en" + rest : rest === "/en" ? "/" : rest.slice(3);
+    location.replace(root + target + location.search + location.hash);
+  } catch (e) {}
+})();`;
+
 export default defineConfig({
   site,
   base,
@@ -21,6 +45,7 @@ export default defineConfig({
         { tag: "link", attrs: { rel: "icon", href: withBase("favicon.ico"), sizes: "48x48" } },
         { tag: "link", attrs: { rel: "apple-touch-icon", href: withBase("apple-touch-icon.png") } },
         { tag: "meta", attrs: { property: "og:image", content: new URL(withBase("og.png"), site).href } },
+        { tag: "script", content: languageRedirect },
       ],
       defaultLocale: "root",
       locales: {
