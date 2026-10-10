@@ -38,3 +38,10 @@
 }
 
 .site-title img { height: 1.5rem; width: auto; }
+
+/* neutral "note" asides to match the black / white brand */
+.starlight-aside--note {
+  --sl-color-asides-text-accent: var(--sl-color-white);
+  --sl-color-asides-border: var(--sl-color-gray-3);
+  background-color: var(--sl-color-gray-6);
+}
