@@ -3,7 +3,8 @@ import starlight from "@astrojs/starlight";
 
 // SITE_URL / BASE_PATH come from actions/configure-pages in CI, so the same build works at
 // openinfinity.github.io/docs/ (before the custom domain) and at docs.open-infinity.com.
-const site = process.env.SITE_URL || "https://docs.open-infinity.com";
+// configure-pages reports http:// until HTTPS is enforced; the sites are always served over https
+const site = (process.env.SITE_URL || "https://docs.open-infinity.com").replace(/^http:/, "https:");
 const base = process.env.BASE_PATH || "/";
 const withBase = (path) => `${base.replace(/\/$/, "")}/${path}`;
 
