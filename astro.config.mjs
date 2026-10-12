@@ -8,16 +8,17 @@ const site = (process.env.SITE_URL || "https://docs.open-infinity.com").replace(
 const base = process.env.BASE_PATH || "/";
 const withBase = (path) => `${base.replace(/\/$/, "")}/${path}`;
 
+// English lives at the root and Chinese under /zh/ (x-default is English).
 // Arriving from outside the site: show Chinese to Chinese-language systems and English to everyone else.
 // Moving within the site (including the language menu) counts as a choice and is remembered.
-// Crawlers are never redirected, so both language versions stay indexable (hreflang links them).
+// Crawlers and headless renderers are never redirected, so both language versions stay indexable (hreflang links them).
 const languageRedirect = `(function () {
   try {
-    if (/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent)) return;
+    if (/bot|crawl|spider|slurp|preview|lighthouse|headless/i.test(navigator.userAgent)) return;
     var KEY = "oi-docs-lang";
     var root = ${JSON.stringify(base.replace(/\/$/, ""))};
     var rest = location.pathname.slice(root.length) || "/";
-    var here = rest === "/en" || rest.indexOf("/en/") === 0 ? "en" : "zh";
+    var here = rest === "/zh" || rest.indexOf("/zh/") === 0 ? "zh" : "en";
     var internal = false;
     try { internal = !!document.referrer && new URL(document.referrer).host === location.host; } catch (e) {}
     if (internal) { localStorage.setItem(KEY, here); return; }
@@ -27,7 +28,7 @@ const languageRedirect = `(function () {
       want = n.indexOf("zh") === 0 ? "zh" : "en";
     }
     if (want === here) return;
-    var target = want === "en" ? "/en" + rest : rest === "/en" ? "/" : rest.slice(3);
+    var target = want === "zh" ? "/zh" + rest : rest === "/zh" ? "/" : rest.slice(3);
     location.replace(root + target + location.search + location.hash);
   } catch (e) {}
 })();`;
@@ -35,10 +36,17 @@ const languageRedirect = `(function () {
 export default defineConfig({
   site,
   base,
+  // English used to live under /en/ (2026-10-11 to 2026-10-12); keep those addresses working
+  redirects: {
+    "/en": "/",
+    "/en/start/introduction": "/start/introduction/",
+    "/en/guides/overview": "/guides/overview/",
+    "/en/reference/overview": "/reference/overview/",
+  },
   integrations: [
     starlight({
-      title: { "zh-CN": "OpenInfinity 文档", en: "OpenInfinity Docs" },
-      description: "OpenInfinity 的使用指南与参考资料。Guides and reference for OpenInfinity.",
+      title: { en: "OpenInfinity Docs", "zh-CN": "OpenInfinity 文档" },
+      description: "Guides and reference for OpenInfinity. OpenInfinity 的使用指南与参考资料。",
       logo: { light: "./src/assets/logo-black.svg", dark: "./src/assets/logo-white.svg", replacesTitle: true },
       favicon: "/favicon.svg",
       head: [
@@ -49,8 +57,8 @@ export default defineConfig({
       ],
       defaultLocale: "root",
       locales: {
-        root: { label: "简体中文", lang: "zh-CN" },
-        en: { label: "English", lang: "en" },
+        root: { label: "English", lang: "en" },
+        zh: { label: "简体中文", lang: "zh-CN" },
       },
       social: [
         { icon: "github", label: "GitHub", href: "https://github.com/OpenInfinity" },
@@ -59,9 +67,9 @@ export default defineConfig({
       lastUpdated: true,
       customCss: ["./src/styles/custom.css"],
       sidebar: [
-        { label: "开始", translations: { en: "Getting started" }, items: [{ autogenerate: { directory: "start" } }] },
-        { label: "指南", translations: { en: "Guides" }, items: [{ autogenerate: { directory: "guides" } }] },
-        { label: "参考", translations: { en: "Reference" }, items: [{ autogenerate: { directory: "reference" } }] },
+        { label: "Getting started", translations: { "zh-CN": "开始" }, items: [{ autogenerate: { directory: "start" } }] },
+        { label: "Guides", translations: { "zh-CN": "指南" }, items: [{ autogenerate: { directory: "guides" } }] },
+        { label: "Reference", translations: { "zh-CN": "参考" }, items: [{ autogenerate: { directory: "reference" } }] },
       ],
     }),
   ],

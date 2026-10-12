@@ -1,8 +1,8 @@
 ---
-title: 参考概览
-description: OpenInfinity 参考资料。
+title: Reference overview
+description: OpenInfinity reference.
 ---
 
-:::note[编写中]
-本页内容即将补充。
+:::note[In progress]
+This page is coming soon.
 :::

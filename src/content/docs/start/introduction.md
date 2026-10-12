@@ -1,8 +1,8 @@
 ---
-title: 简介
-description: OpenInfinity 是什么。
+title: Introduction
+description: What OpenInfinity is.
 ---
 
-:::note[编写中]
-本页内容即将补充。
+:::note[In progress]
+This page is coming soon.
 :::

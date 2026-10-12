@@ -1,8 +1,8 @@
 ---
-title: 指南概览
-description: OpenInfinity 使用指南。
+title: Guides overview
+description: How to use OpenInfinity.
 ---
 
-:::note[编写中]
-本页内容即将补充。
+:::note[In progress]
+This page is coming soon.
 :::
